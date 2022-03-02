@@ -9,7 +9,7 @@ public class Film {
 	private int ReleaseYear;
 	private List<Integer> SessionList;
 	private List<Integer> ProduserList;
-	private List<Integer> ActorsList;
+	private List<Integer> ActorList;
 	
 	public int GetFilmID() {
 		return FilmID;
@@ -41,5 +41,25 @@ public class Film {
 	
 	public boolean SetReleaseYear(int releaseYear) {
 		return true; //or false(later)
+	}
+	
+	public List<Integer> GetSessionList() {
+		return SessionList;
+	}
+
+	public List<Integer> GetProduserList() {
+		return ProduserList;
+	}
+	
+	public boolean SetProduserList(List<Integer> produserList) {
+		return true;
+	}
+	
+	public List<Integer> GetActorList() {
+		return ActorList;
+	}
+	
+	public boolean SetActorList(List<Integer> actorList) {
+		return true;
 	}
 }
