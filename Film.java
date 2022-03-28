@@ -1,65 +1,89 @@
-package tasks.fims;
+package cinemaProject;
 
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "cinema_db.film")
 public class Film {
+	@Id
+	@Column(name = "fid")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int FilmID;
+	
+	@Column(name = "f_name")
 	private String Name;
+	
+	@Column(name = "f_genre")
 	private String Genre;
+	
+	@Column(name = "f_releaseyear")
 	private int ReleaseYear;
-	private List<Integer> SessionList;
-	private List<Integer> ProduserList;
-	private List<Integer> ActorList;
+	
+	@OneToMany(mappedBy = "film_id", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Session> SessionList = new ArrayList<Session>();
+	
+	@ManyToMany(mappedBy = "FilmList")
+	private List<Person> PersonList = new ArrayList<Person>();
+	
+	public void addPerson(Person person) {
+		PersonList.add(person);
+		//person.addFilm(this);
+	}
+	public void removePerson(Person person) {
+		PersonList.remove(person);
+		//person.removeFilm(this);
+	}
+	public List<Person> GetPersonList() {
+		return PersonList;
+	}
+	
+    public void addSession(Session session) {
+    	SessionList.add(session);
+    	session.SetFilmID(this);
+    }
+    public void removeSession(Session session) {
+    	SessionList.remove(session);
+    	session.SetFilmID(null);
+    }
+    public List<Session> GetSessionList() {
+    	return this.SessionList;
+    }
 	
 	public int GetFilmID() {
 		return FilmID;
 	}
-	
 	public boolean SetFilmID(int filmID) {
-		return true; //or false(later)
+		this.FilmID = filmID;
+		return true;
 	}
 	
 	public String GetName() {
 		return Name;
 	}
-	
 	public boolean SetName(String name) {
-		return true; //or false(later)
+		this.Name = name;
+		return true;
 	}
 	
 	public String GetGenre() {
 		return Genre;
 	}
-	
 	public boolean SetGenre(String genre) {
-		return true; //or false(later)
+		this.Genre = genre;
+		return true;
 	}
 	
 	public int GetReleaseYear() {
 		return ReleaseYear;
 	}
-	
 	public boolean SetReleaseYear(int releaseYear) {
-		return true; //or false(later)
-	}
-	
-	public List<Integer> GetSessionList() {
-		return SessionList;
-	}
-
-	public List<Integer> GetProduserList() {
-		return ProduserList;
-	}
-	
-	public boolean SetProduserList(List<Integer> produserList) {
+		this.ReleaseYear = releaseYear;
 		return true;
 	}
 	
-	public List<Integer> GetActorList() {
-		return ActorList;
-	}
-	
-	public boolean SetActorList(List<Integer> actorList) {
-		return true;
+	public Film() {
+		
 	}
 }
