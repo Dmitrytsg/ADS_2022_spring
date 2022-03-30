@@ -8,49 +8,44 @@ import javax.persistence.*;
 import cinemaProject.*;
 
 public class App {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("hb-persistence");
 		EntityManager em = emf.createEntityManager();
 		
-		System.out.println("Start");
+		System.out.println("Start\n\n");
 		
 		em.getTransaction().begin();
 		
 		
-		Person pr = em.find(Person.class, 2);
+		
 		Film fm = em.find(Film.class, 3);
+
+		//Session sn = em.find(Session.class, 5);
 		
-		//pr.addFilm(fm);
-		
-		pr.addFilm(fm);
-		
-		/*Person pr = new Person();
-		pr.SetYearsOld(32);
-		pr.SetFirstName("Dima");
-		pr.SetLastName("Tsygankov");
-		pr.SetStatus("Actor");*/
-		
-		/*Session sn = new Session();
-		sn.SetDate(2021, 5, 12);
-		sn.SetTicketCount(45);
-		sn.SetStartTime(16, 55);
-		sn.SetFinishTime(18, 34);
-		sn.SetFilmID(em.find(Film.class, 1));*/
-		
-		/*Session sn = em.find(Session.class, 3);
-	
-		Film fm = new Film();
-		fm.SetGenre("crim");
-		fm.SetName("Stringer 3");
-		fm.SetReleaseYear(2009);
-		fm.addSession(sn);*/
-		
-		//sn.SetFilmID(em.find(Film.class, 1));
+		Session sn = new Session();
+		sn.SetFinishTime(16, 45);
+		sn.SetStartTime(15, 0);
+		sn.SetDate(2022, 5, 13);
+		sn.SetTicketCount(25);
 		
 		
-		em.persist(pr);
-		em.getTransaction().commit();
-		System.out.println("Finish");
+		sn.SetFilmID(null);
+		
+		System.out.println(sn.GetDate());
+		System.out.println(sn.GetStartTime());
+		System.out.println(sn.GetFinishTime());
+		
+		//fm.removeSession(sn);
+		//fm.addSession(sn);
+		
+		//em.persist(fm);
+		//em.getTransaction().commit();
+		
+		/*for (Session session : fm.GetSessionList()){
+			System.out.println(session.GetDate());
+	    }*/
+		
+		System.out.println("\n\nFinish");
 	}
 	
 }

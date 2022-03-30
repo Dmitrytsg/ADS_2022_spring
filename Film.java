@@ -21,7 +21,7 @@ public class Film {
 	@Column(name = "f_releaseyear")
 	private int ReleaseYear;
 	
-	@OneToMany(mappedBy = "film_id", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "film_id", cascade = CascadeType.ALL, orphanRemoval = false)
 	private List<Session> SessionList = new ArrayList<Session>();
 	
 	@ManyToMany(mappedBy = "FilmList")
@@ -29,14 +29,27 @@ public class Film {
 	
 	public void addPerson(Person person) {
 		PersonList.add(person);
-		//person.addFilm(this);
+		person.addFilm(this);
 	}
 	public void removePerson(Person person) {
 		PersonList.remove(person);
-		//person.removeFilm(this);
+		person.removeFilm(this);
 	}
-	public List<Person> GetPersonList() {
-		return PersonList;
+	
+	public List<Person> GetActorList() {
+		List<Person> ActorList = new ArrayList<Person>();
+		for (Person person: PersonList) {
+			if (person.GetStatus().contains("Actor")) { ActorList.add(person); }			
+		}
+		return ActorList;
+	}
+	
+	public List<Person> GetProducerList() {
+		List<Person> ProducerList = new ArrayList<Person>();
+		for (Person person: PersonList) {
+			if (person.GetStatus().contains("Producer")) { ProducerList.add(person); }			
+		}
+		return ProducerList;
 	}
 	
     public void addSession(Session session) {
@@ -45,7 +58,7 @@ public class Film {
     }
     public void removeSession(Session session) {
     	SessionList.remove(session);
-    	session.SetFilmID(null);
+    	session.removeFilm();;
     }
     public List<Session> GetSessionList() {
     	return this.SessionList;

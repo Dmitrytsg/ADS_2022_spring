@@ -34,11 +34,9 @@ public class Person {
 	
 	public void addFilm(Film film) {
 		FilmList.add(film);
-		//film.addPerson(this);
 	}
 	public void removeFilm(Film film) {
 		FilmList.remove(film);
-		//film.removePerson(this);
 	}
 	public List<Film> GetFilmList() {
 		return FilmList;
@@ -87,14 +85,6 @@ public class Person {
 		this.Status = status;
 		return true;
 	}
-	
-	
-	/*public List<Integer> GetListOfFilms() {
-		return ListOfFilms;
-	}
-	public boolean SetListOfFilms(List<Integer> listOfFilms) {
-		return true;
-	}*/
 	
 	public Person() {
 		

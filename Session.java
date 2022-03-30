@@ -14,9 +14,9 @@ public class Session {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int SessionID;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional=false, cascade=CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, optional=true, cascade=CascadeType.ALL)
 	@JoinColumn(name="film_id")
-	private Film film_id;
+	private Film film_id = new Film();
 	
 	@Column(name = "s_date")
 	private Calendar Date;
@@ -47,24 +47,45 @@ public class Session {
 		this.film_id = filmID;
 		return true;
 	}
+	public void removeFilm() {
+		this.film_id = null;
+	}
+	
 	
 	public Date GetDate() {
 		return Date.getTime();
 	}
-	public boolean SetDate(int year, int month, int day) {
+	
+	public boolean SetDate(int year, int month, int day) throws Exception {
+		if (String.valueOf(year).length() < 1 | String.valueOf(year).length() > 4 | year == 0) { throw new Exception("The length of the Year field must be 4"); }
 		Date = new GregorianCalendar();
 		Date.set(Calendar.YEAR, year);
 		Date.set(Calendar.MONTH, (month-1));
 		Date.set(Calendar.DAY_OF_MONTH, day);
+		
+		if (StartTime != null) {
+			StartTime.set(Calendar.YEAR, year);
+			StartTime.set(Calendar.MONTH, (month-1));
+			StartTime.set(Calendar.DAY_OF_MONTH, day);
+		}
+		
+		if (FinishTime != null) {
+			FinishTime.set(Calendar.YEAR, year);
+			FinishTime.set(Calendar.MONTH, (month-1));
+			FinishTime.set(Calendar.DAY_OF_MONTH, day);
+		}
+		
 		return true;
 	}
+	
 	
 	public Date GetStartTime() {
 		return StartTime.getTime();
 	}
 	public boolean SetStartTime(int hour, int minute) {
-		//!!пофиксить если Date == null
-		StartTime = new GregorianCalendar(this.Date.get(Calendar.YEAR),this.Date.get(Calendar.MONTH)-1,this.Date.get(Calendar.DAY_OF_MONTH)); 
+		if (Date == null) { StartTime = new GregorianCalendar(11,11,11); }
+		else { StartTime = new GregorianCalendar(this.Date.get(Calendar.YEAR),this.Date.get(Calendar.MONTH),this.Date.get(Calendar.DAY_OF_MONTH)); }
+		
 		StartTime.set(Calendar.HOUR_OF_DAY, hour);
 		StartTime.set(Calendar.MINUTE, minute);
 		return true;
@@ -74,8 +95,9 @@ public class Session {
 		return FinishTime.getTime();
 	}
 	public boolean SetFinishTime(int hour, int minute) {
-		//!!пофиксить если Date == null
-		FinishTime = new GregorianCalendar(this.Date.get(Calendar.YEAR),this.Date.get(Calendar.MONTH)-1,this.Date.get(Calendar.DAY_OF_MONTH));
+		if (Date == null) { FinishTime = new GregorianCalendar(11,11,11); }
+		else {FinishTime = new GregorianCalendar(this.Date.get(Calendar.YEAR),this.Date.get(Calendar.MONTH),this.Date.get(Calendar.DAY_OF_MONTH)); }
+
 		FinishTime.set(Calendar.HOUR_OF_DAY, hour);
 		FinishTime.set(Calendar.MINUTE, minute);
 		return true;
